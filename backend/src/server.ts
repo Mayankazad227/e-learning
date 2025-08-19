@@ -5,7 +5,7 @@ import connectDB from "./config/db";
 import { v2 as cloudinary } from "cloudinary";
 import { initSocketServer } from "./socketServer";
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 
 const server = http.createServer(app);
 
