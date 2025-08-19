@@ -20,9 +20,16 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 
 // cors
+const allowedOrigins = [
+  "https://e-learning-lms-ten.vercel.app",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  process.env.FRONTEND_URL as string,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: "https://e-learning-lms-ten.vercel.app",
+    origin: allowedOrigins,
     credentials: true,
   })
 );

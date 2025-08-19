@@ -11,7 +11,8 @@ import ejs from "ejs";
 import path from "path";
 import { getAllOrdersService, newOrder } from "../services/order.service";
 import { redis } from "../utils/redis";
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripeSecret = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeSecret ? require("stripe")(stripeSecret) : null;
 
 const createOrder = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -155,6 +156,9 @@ const getStripePublishableKey = catchAsyncError(
 const newPayment = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      if (!stripe) {
+        return next(new Error("Stripe is not configured"));
+      }
       const myPayment = await stripe.paymentIntents.create({
         amount: req.body.amount,
         currency: "USD",
