@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import ThemeSwitcher from "../../utils/ThemeSwitcher";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import socketIO from "socket.io-client";
@@ -38,11 +38,11 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
     }
   }, []);
 
-  const playerNotificationSound = () => {
+  const playerNotificationSound = useCallback(() => {
     if (audio && audio.readyState >= 3) {
       audio.play();
     }
-  };
+  }, [audio]);
 
   useEffect(() => {
     if (data) {
@@ -56,14 +56,18 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
     if (audio) {
       audio.load();
     }
-  }, [data, isSuccess, audio]);
+  }, [data, isSuccess, audio, refetch]);
 
   useEffect(() => {
-    socketId.on("newNotification", (data) => {
+    const handler = () => {
       refetch();
       playerNotificationSound();
-    });
-  }, []);
+    };
+    socketId.on("newNotification", handler);
+    return () => {
+      socketId.off("newNotification", handler);
+    };
+  }, [refetch, playerNotificationSound]);
 
   const handleNotificationStatusChange = async (id: string) => {
     await updateNotificationStatus(id);

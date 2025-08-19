@@ -3,6 +3,7 @@ import {
   useGetHeroDataQuery,
 } from "../../../../redux/features/layout/layoutApi";
 import React, { FC, useEffect, useState } from "react";
+import Image from "next/image";
 import { AiOutlineCamera } from "react-icons/ai";
 import { style } from "../../../styles/styles";
 import toast from "react-hot-toast";
@@ -29,7 +30,7 @@ const EditHero: FC<Props> = (props) => {
       const errorMessage = errorData?.message || "An error occurred";
       toast.error(errorMessage);
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, refetch]);
 
   useEffect(() => {
     if (data) {
@@ -72,10 +73,12 @@ const EditHero: FC<Props> = (props) => {
         <div className="absolute top-[100px] 1000px:top-[unset] 1500px:h-[500px] 1500px:w-[500px] 1100px:w-[400px] 1100px:h-[400px] w-[40vh] h-[40vh] hero_animation rounded-[50%] 1100px:left-[18rem] 1500px:left-[21rem]"></div>
         <div className="1100px:w-[40%] flex items-center justify-end 1000px:min-h-screen pt-[70px] 1000px:pt-[0] z-[10]">
           <div className="relative flex items-center justify-end">
-            <img
-              src={image}
-              alt=""
+            <Image
+              src={image || "/placeholder.png"}
+              alt="Banner image"
               className="object-contain 1100px:max-w-[90%] 1500px:max-w-[85%] h-[auto] z-[10]"
+              width={800}
+              height={600}
             />
             <input
               type="file"

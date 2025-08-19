@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
+import Image from "next/image";
 import { style } from "../../../styles/styles";
 import { useGetHeroDataQuery } from "../../../../redux/features/layout/layoutApi";
 import Loader from "../../Loader/Loader";
@@ -251,10 +252,12 @@ const CourseInformation: FC<Props> = ({
             onDrop={handleDrop}
           >
             {courseInfo.thumbnail ? (
-              <img
+              <Image
                 src={courseInfo.thumbnail}
                 alt="thumbnail"
                 className="w-full max-h-full object-cover"
+                width={800}
+                height={450}
               />
             ) : (
               <span className="text-black dark:text-white">

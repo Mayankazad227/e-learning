@@ -97,7 +97,7 @@ const AllCourses: FC<Props> = (props) => {
       const errorMessage = errorData?.message || "An error occurred";
       toast.error(errorMessage);
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, refetch]);
 
   const handleDeleteCourse = async (id: string) => {
     await deleteCourse(id);

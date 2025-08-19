@@ -36,14 +36,14 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
       const message = data?.message || "Login successful!";
       setOpen(false);
       toast.success(message);
-      refetch();
+      refetch && refetch();
     }
     if (error && "data" in error) {
       const errorData = error.data as { message?: string };
       const errorMessage = errorData?.message || "An error occurred";
       toast.error(errorMessage);
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, data?.message, setOpen, refetch]);
 
   const formik = useFormik({
     initialValues: {
